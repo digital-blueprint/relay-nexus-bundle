@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\NexusBundle\Tests;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle;
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Dbp\Relay\CoreBundle\DbpRelayCoreBundle;
 use Dbp\Relay\NexusBundle\DbpRelayNexusBundle;
 use Nelmio\CorsBundle\NelmioCorsBundle;
@@ -48,9 +48,5 @@ class Kernel extends BaseKernel
         ]);
 
         $container->extension('dbp_relay_nexus', []);
-
-        $container->extension('api_platform', [
-            'metadata_backward_compatibility_layer' => false,
-        ]);
     }
 }
