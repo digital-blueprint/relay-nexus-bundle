@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Dbp\Relay\NexusBundle\DependencyInjection;
 
 use Dbp\Relay\CoreBundle\Authorization\AuthorizationConfigDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface

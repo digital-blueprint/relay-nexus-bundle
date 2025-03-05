@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\NexusBundle\TypesenseApi;
 
+use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Dbp\Relay\NexusBundle\Authorization\AuthorizationService;
 use Dbp\Relay\NexusBundle\Service\ConfigurationService;
-use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
