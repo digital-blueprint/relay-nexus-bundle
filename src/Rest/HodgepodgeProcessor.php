@@ -18,6 +18,11 @@ class HodgepodgeProcessor extends AbstractDataProcessor
         $this->hodgepodgeService = $hodgepodgeService;
     }
 
+    public function isCurrentUserGrantedOperationAccess(int $operation): bool
+    {
+        return true; // TODO ???
+    }
+
     protected function addItem(mixed $data, array $filters): Hodgepodge
     {
         assert($data instanceof Hodgepodge);
