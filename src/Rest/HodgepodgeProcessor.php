@@ -18,7 +18,7 @@ class HodgepodgeProcessor extends AbstractDataProcessor
         $this->hodgepodgeService = $hodgepodgeService;
     }
 
-    public function isCurrentUserGrantedOperationAccess(int $operation): bool
+    protected function isCurrentUserGrantedOperationAccess(int $operation): bool
     {
         return true; // TODO ???
     }
