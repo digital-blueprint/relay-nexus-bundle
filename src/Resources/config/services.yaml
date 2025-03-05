@@ -1,1 +1,10 @@
 services:
+  Dbp\Relay\NexusBundle\Rest\:
+    resource: '../../Rest'
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\NexusBundle\Service\:
+    resource: '../../Service'
+    autowire: true
+    autoconfigure: true
