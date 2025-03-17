@@ -8,3 +8,8 @@ services:
     resource: '../../Service'
     autowire: true
     autoconfigure: true
+
+  Dbp\Relay\NexusBundle\Command\:
+    resource: '../../Command'
+    autowire: true
+    autoconfigure: true
