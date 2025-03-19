@@ -13,9 +13,19 @@ class ConfigurationService
         $this->config = $config;
     }
 
-    public function getTypesenseApiUrl(): string
+    public function getTypesenseHost(): string
     {
-        return $this->config['typesense']['api_url'];
+        return $this->config['typesense']['host'];
+    }
+
+    public function getTypesenseProt(): string
+    {
+        return $this->config['typesense']['prot'];
+    }
+
+    public function getTypesensePort(): int
+    {
+        return (int)($this->config['typesense']['port']);
     }
 
     public function getTypesenseApiKey(): string
@@ -29,6 +39,16 @@ class ConfigurationService
      */
     public function getTypesenseProxyApiKey(): string
     {
-        return 'nexus:proxy-key';
+        return $this->config['frontend']['api_key'];
+    }
+
+    public function getTopics(): array
+    {
+        return $this->config['topics'] ?? [];
+    }
+
+    public function getAliasName(): string
+    {
+        return $this->config['frontend']['alias'] ?? '';
     }
 }

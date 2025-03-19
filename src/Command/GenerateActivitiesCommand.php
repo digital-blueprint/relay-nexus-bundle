@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dbp\Relay\NexusBundle\Command;
 
+use Dbp\Relay\NexusBundle\Service\ConfigurationService;
 use Dbp\Relay\NexusBundle\Typesense\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,20 +15,23 @@ class GenerateActivitiesCommand extends Command
 {
     private array $urls;
     private Client $client;
+    private string $aliasName;
 
-    public function __construct()
+    public function __construct(ConfigurationService $config)
     {
         parent::__construct();
 
-        $connection = new Connection('apikey','localhost', 8108, 'http');
+        $connection = new Connection(
+            $config->getTypesenseApiKey(),
+            $config->getTypesenseHost(),
+            $config->getTypesensePort(),
+            $config->getTypesenseProt()
+        );
         $this->client = $connection->getClient();
 
-        // TODO
-        $this->urls = [
-            'https://dbp-dev.tugraz.at/apps/activity-showcase/dbp-activity-showcase.topic.metadata.json',
-            'https://esign.tugraz.at/dbp-signature.topic.metadata.json',
-            'https://dbp-demo.tugraz.at/tugapps/formalize/dbp-formalize.topic.metadata.json',
-        ];
+        $this->urls = $config->getTopics();
+
+        $this->aliasName = $config->getAliasName();
     }
 
     protected function configure(): void
@@ -38,30 +42,26 @@ class GenerateActivitiesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $verbose = !$input->getOption('quiet');
         $data = [];
 
-        $output->writeln('<info>Input URLs</info>');
+        if ($verbose) {
+            $output->writeln('<info>Input URLs</info>');
+        }
         foreach ($this->urls as $url) {
-            $output->writeln($url);
+            if ($verbose) {
+                $output->writeln($url);
+            }
             $topicJson = file_get_contents($url);
             try {
                 $topic = json_decode($topicJson, true, 32, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                $output->error($e->getMessage());
+                $output->writeln('<error>'.$e->getMessage().'</error>');
                 continue;
             }
-            // $output->writeln(print_r($topic, true));
-            // $output->writeln($topic['name']['en']);
-            // $output->writeln($topic['short_name']['en']);
-            // $output->writeln($topic['description']['en']);
-            // $output->writeln($topic['routing_name']);
             $last = self::last($url);
             foreach ($topic['activities'] as $a) {
-                // $output->writeln(print_r($a, true));
-
                 $activityUrl = str_replace($last, $a['path'], $url);
-                // $output->writeln($activityUrl);
-
                 $activityJson = file_get_contents($activityUrl);
                 try {
                     $activity = json_decode($activityJson, true, 32, JSON_THROW_ON_ERROR);
@@ -69,14 +69,6 @@ class GenerateActivitiesCommand extends Command
                     $output->error($e->getMessage());
                     continue;
                 }
-                // $output->writeln($activity['name']['en']);
-                // $output->writeln($activity['short_name']['en']);
-                // $output->writeln($activity['description']['en']);
-                // $output->writeln($activity['element']);
-                // $output->writeln($activity['module_src']);
-                // $output->writeln($activity['routing_name']);
-                // $output->writeln($activity['subscribe']);
-                // $output->writeln($activity['required_roles'] ?? '<no-roles-required/>');
 
                 $data[] = [
                     'activityName' => $activity['name']['en'],
@@ -90,27 +82,47 @@ class GenerateActivitiesCommand extends Command
             }
         }
 
-        $output->writeln('<info>document to upsert in typesense</info>');
-        $output->writeln(json_encode($data, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+        if (count($data) > 0) {
+            if ($verbose) {
+                $output->writeln('<info>Document to upsert</info>');
+            }
+            if ($verbose) {
+                $output->writeln(json_encode($data, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+            }
 
-        $collectionName = 'nexus-' . date('YmdHis');
-        $fields = '';
-        $sortFieldName = '';
-        $this->client->collections->create(
-            [
-                'name' => $collectionName,
-                'fields' => $fields,
-                'default_sorting_field' => $sortFieldName,
-            ]
-        );
+            $schema = json_decode(file_get_contents(__DIR__.'/../../data-definition/schema.json'), true, 16);
 
-        $info = $this->client->collections[$collectionName]->retrieve();
+            $schema['name'] = $collectionName = 'nexus--'.date('Ymd-His');
+            $this->client->collections->create($schema);
+            $this->client->collections[$collectionName]->documents->import($data, ['action' => 'upsert']);
 
-        //echo print_r($info, true) . "\n\n";
-        $output->writeln("name:  {$info['name']}");
-        $output->writeln("count: {$info['num_documents']}");
+            $info = $this->client->collections[$collectionName]->retrieve();
+            $availableDocuments = $info['num_documents'];
 
-        return 0;
+            if ($verbose) {
+                $output->writeln('<info>Collection written</info>');
+                // echo print_r($info, true) . "\n\n";
+                $output->writeln("name:  {$info['name']}");
+                $output->writeln("count: {$availableDocuments}");
+            }
+            if ($availableDocuments > 0) {
+                $this->client->aliases->upsert($this->aliasName, ['collection_name' => $collectionName]);
+                if ($verbose) {
+                    $output->writeln('<info>Aliases written</info>');
+                    $output->writeln("alias {$this->aliasName} for $collectionName");
+                }
+            } else {
+                $output->writeln('<error>Upsert documents failed.</error>');
+
+                return self::FAILURE;
+            }
+        } else {
+            $output->writeln('<error>No documents to upsert</error>');
+
+            return self::FAILURE;
+        }
+
+        return self::SUCCESS;
     }
 
     private static function last(string $url): string
