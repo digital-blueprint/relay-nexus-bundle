@@ -56,7 +56,8 @@ class TypesenseService implements LoggerAwareInterface
             throw new HttpException(Response::HTTP_FORBIDDEN, 'access denied');
         }
 
-        $url = $this->config->getTypesenseApiUrl().'/'.$path;
+        $apiUrl = $this->config->getTypesenseProt().'://'.$this->config->getTypesenseHost().':'.$this->config->getTypesensePort();
+        $url = $apiUrl.'/'.$path;
         $method = $request->getMethod();
         $queryParams = $request->query->all();
         // The header key wins over this in my testing, but just to be safe don't allow users to set

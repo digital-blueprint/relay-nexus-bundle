@@ -10,6 +10,7 @@ use Http\Client\Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Typesense\Client;
 use Typesense\Exceptions\TypesenseClientError;
 
@@ -44,6 +45,7 @@ class GenerateActivitiesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
         $verbose = !$input->getOption('quiet');
         $data = [];
 
@@ -68,7 +70,7 @@ class GenerateActivitiesCommand extends Command
                 try {
                     $activity = json_decode($activityJson, true, 32, JSON_THROW_ON_ERROR);
                 } catch (\JsonException $e) {
-                    $output->error($e->getMessage());
+                    $io->error($e->getMessage());
                     continue;
                 }
 
@@ -134,7 +136,9 @@ class GenerateActivitiesCommand extends Command
      * Remove collections, which names start with self::collectionPrefix(), but keep at least some.
      *
      * @param int $keep number of collections to keep
+     *
      * @return int number of collections deleted
+     *
      * @throws Exception
      * @throws TypesenseClientError
      */
@@ -165,9 +169,6 @@ class GenerateActivitiesCommand extends Command
 
     /**
      * Get the last part of the URL when separated by slashes.
-     *
-     * @param string $url
-     * @return string
      */
     private static function last(string $url): string
     {
@@ -179,8 +180,6 @@ class GenerateActivitiesCommand extends Command
 
     /**
      * Get the collection prefix for all collections created for this bundle.
-     *
-     * @return string
      */
     private static function collectionPrefix(): string
     {

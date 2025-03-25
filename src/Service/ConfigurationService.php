@@ -25,7 +25,7 @@ class ConfigurationService
 
     public function getTypesensePort(): int
     {
-        return (int)($this->config['typesense']['port']);
+        return (int) $this->config['typesense']['port'];
     }
 
     public function getTypesenseApiKey(): string
