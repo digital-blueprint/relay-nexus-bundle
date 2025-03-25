@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Drop support for PHP 8.1
+
 ## v0.2.1
 
 * Fix composer install when php8.1 lowest possible version.
