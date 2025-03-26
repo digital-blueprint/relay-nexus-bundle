@@ -155,9 +155,9 @@ class GenerateActivitiesCommand extends Command
             }
         }
         if (count($nexusCollectionNames) > 0) {
-            sort($nexusCollectionNames);
+            rsort($nexusCollectionNames);
             foreach ($nexusCollectionNames as $index => $name) {
-                if ($keep <= $index) {
+                if ($index >= $keep) {
                     $this->client->collections[$name]->delete();
                     ++$removed;
                 }
