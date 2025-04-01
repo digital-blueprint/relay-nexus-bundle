@@ -25,6 +25,8 @@ class DbpRelayNexusExtension extends ConfigurableExtension
 
         $this->addResourceClassDirectory($container, __DIR__.'/../Entity');
 
+        $this->addRouteResource($container, __DIR__.'/../Resources/config/routes.yaml', 'yaml');
+
         $definition = $container->getDefinition(ConfigurationService::class);
         $definition->addMethodCall('setConfig', [$mergedConfig]);
     }
