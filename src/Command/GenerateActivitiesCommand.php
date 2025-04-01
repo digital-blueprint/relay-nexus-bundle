@@ -25,10 +25,8 @@ class GenerateActivitiesCommand extends Command
         parent::__construct();
 
         $connection = new Connection(
-            $config->getTypesenseApiKey(),
-            $config->getTypesenseHost(),
-            $config->getTypesensePort(),
-            $config->getTypesenseProt()
+            $config->getTypesenseApiUrl(),
+            $config->getTypesenseApiKey()
         );
         $this->client = $connection->getClient();
 

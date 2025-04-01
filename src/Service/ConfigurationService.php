@@ -13,19 +13,9 @@ class ConfigurationService
         $this->config = $config;
     }
 
-    public function getTypesenseHost(): string
+    public function getTypesenseApiUrl(): string
     {
-        return $this->config['typesense']['host'];
-    }
-
-    public function getTypesenseProt(): string
-    {
-        return $this->config['typesense']['prot'];
-    }
-
-    public function getTypesensePort(): int
-    {
-        return (int) $this->config['typesense']['port'];
+        return $this->config['typesense']['api_url'];
     }
 
     public function getTypesenseApiKey(): string
