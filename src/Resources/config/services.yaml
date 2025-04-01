@@ -13,3 +13,13 @@ services:
     resource: '../../Command'
     autowire: true
     autoconfigure: true
+
+  Dbp\Relay\NexusBundle\TypesenseApi\:
+    resource: '../../TypesenseApi'
+    autowire: true
+    autoconfigure: true
+
+  Dbp\Relay\NexusBundle\Authorization\:
+    resource: '../../Authorization'
+    autowire: true
+    autoconfigure: true
