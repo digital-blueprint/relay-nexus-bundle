@@ -173,7 +173,7 @@ class GenerateActivitiesCommand extends Command
         $parts = explode('/', $url);
         $parts = array_reverse($parts);
 
-        return $parts[0] ?? '';
+        return $parts[0];
     }
 
     /**
