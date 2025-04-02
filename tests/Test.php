@@ -10,9 +10,8 @@ class Test extends KernelTestCase
 {
     public function testContainer()
     {
-        // self::bootKernel();
-        // $container = static::getContainer();
-        // $this->assertNotNull($container);
-        $this->expectNotToPerformAssertions();
+        self::bootKernel();
+        $container = static::getContainer();
+        $this->assertNotNull($container);
     }
 }
