@@ -74,7 +74,7 @@ class GenerateActivitiesCommand extends Command
 
                 $data[] = [
                     'activityName' => $activity['name']['en'],
-                    'activityPath' => str_replace('.metadata.json', '', $a['path']),
+                    'activityPath' => $activityUrl,
                     'activityDescription' => $activity['description']['en'],
                     'activityRoutingName' => $activity['routing_name'],
                     'activityModuleSrc' => $activity['module_src'],
