@@ -29,7 +29,7 @@ class ConfigurationService
      */
     public function getTypesenseProxyApiKey(): string
     {
-        return $this->config['frontend']['api_key'];
+        return 'nexus:proxy-key';
     }
 
     public function getTopics(): array

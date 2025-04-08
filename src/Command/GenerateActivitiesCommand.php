@@ -7,6 +7,9 @@ namespace Dbp\Relay\NexusBundle\Command;
 use Dbp\Relay\NexusBundle\Service\ConfigurationService;
 use Dbp\Relay\NexusBundle\Typesense\Connection;
 use Http\Client\Exception;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,11 +17,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Typesense\Client;
 use Typesense\Exceptions\TypesenseClientError;
 
-class GenerateActivitiesCommand extends Command
+class GenerateActivitiesCommand extends Command implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
     private array $urls;
     private Client $client;
     private string $aliasName;
+
+    private ConfigurationService $config;
 
     public function __construct(ConfigurationService $config)
     {
@@ -33,6 +39,8 @@ class GenerateActivitiesCommand extends Command
         $this->urls = $config->getTopics();
 
         $this->aliasName = $config->getAliasName();
+        $this->config = $config;
+        $this->logger = new NullLogger();
     }
 
     protected function configure(): void
@@ -46,6 +54,8 @@ class GenerateActivitiesCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $verbose = !$input->getOption('quiet');
         $data = [];
+
+        $this->updateProxyApiKey();
 
         if ($verbose) {
             $output->writeln('<info>Input URLs</info>');
@@ -182,5 +192,47 @@ class GenerateActivitiesCommand extends Command
     private static function collectionPrefix(): string
     {
         return 'nexus--';
+    }
+
+    private function updateProxyApiKey(): void
+    {
+        $aliasName = $this->config->getAliasName();
+        $schema = [
+            'description' => 'nexus read only proxy key',
+            'actions' => [
+                // allow all read-only operations
+                'documents:search',
+                'documents:get',
+                'documents:export',
+            ],
+            'collections' => [$aliasName],
+            'value' => $this->config->getTypesenseProxyApiKey(),
+        ];
+
+        $this->logger->info('Re-creating read-only key if needed');
+        $client = $this->client;
+        $keys = $client->keys->retrieve();
+        $foundId = null;
+        foreach ($keys['keys'] as $key) {
+            if (in_array($aliasName, $key['collections'], true)) {
+                if ($key['description'] === $schema['description']
+                    && $key['actions'] === $schema['actions']
+                    && $key['collections'] === $schema['collections']
+                    && str_starts_with($schema['value'], $key['value_prefix'])) {
+                    $this->logger->info('Found existing matching key '.$key['id']);
+                    $foundId = $key['id'];
+                    break;
+                } else {
+                    $this->logger->info('Deleting outdated key '.$key['id']);
+                    $client->keys[$key['id']]->delete();
+                }
+            }
+        }
+
+        if ($foundId === null) {
+            $this->logger->info('No existing key found, creating a new one');
+            $key = $client->keys->create($schema);
+            $this->logger->info('Created new key '.$key['id']);
+        }
     }
 }
