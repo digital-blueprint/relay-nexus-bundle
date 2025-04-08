@@ -82,15 +82,23 @@ class GenerateActivitiesCommand extends Command implements LoggerAwareInterface
                     continue;
                 }
 
-                $data[] = [
-                    'activityName' => $activity['name']['en'],
-                    'activityPath' => $activityUrl,
-                    'activityDescription' => $activity['description']['en'],
-                    'activityRoutingName' => $activity['routing_name'],
-                    'activityModuleSrc' => $activity['module_src'],
-                    'activityTag' => ['pdf', 'signature'],
-                    'activityIcon' => $activity['routing_name'].'-icon',
-                ];
+                // Skip duplicate activities
+                $activityName = $activity['name']['en'];
+                $duplicate = array_filter($data, function($item) use ($activityName)  {
+                    return $item['activityName'] === $activityName;
+                });
+
+                if (count($duplicate) < 1) {
+                    $data[] = [
+                        'activityName' => $activity['name']['en'],
+                        'activityPath' => $activityUrl,
+                        'activityDescription' => $activity['description']['en'],
+                        'activityRoutingName' => $activity['routing_name'],
+                        'activityModuleSrc' => $activity['module_src'],
+                        'activityTag' => ['pdf', 'signature'],
+                        'activityIcon' => $activity['routing_name'].'-icon',
+                    ];
+                }
             }
         }
 
