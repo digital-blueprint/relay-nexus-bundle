@@ -1,28 +1,28 @@
 {
-  "extends": [
-    "config:base",
-    "group:allNonMajor",
-    "schedule:weekends",
-    ":automergePatch"
-  ],
-  "ignorePresets": [":prHourlyLimit2"],
-  "rangeStrategy": "update-lockfile",
-  "lockFileMaintenance": {
-    "enabled": true
-  },
-  "constraintsFiltering": "strict",
-  "packageRules": [
-    {
-      "matchPackagePrefixes": ["symfony/"],
-      "allowedVersions": "<7"
+    "extends": [
+        "config:base",
+        "group:allNonMajor",
+        "schedule:weekends",
+        ":automergePatch"
+    ],
+    "ignorePresets": [":prHourlyLimit2"],
+    "rangeStrategy": "update-lockfile",
+    "lockFileMaintenance": {
+        "enabled": true
     },
-    {
-      "matchPackageNames": ["api-platform/core"],
-      "allowedVersions": "<4"
-    },
-    {
-      "matchPackageNames": ["phpunit/phpunit"],
-      "allowedVersions": "<11"
-    }
-  ]
+    "constraintsFiltering": "strict",
+    "packageRules": [
+        {
+            "matchPackagePrefixes": ["symfony/"],
+            "allowedVersions": "<7"
+        },
+        {
+            "matchPackageNames": ["api-platform/core"],
+            "allowedVersions": "<4"
+        },
+        {
+            "matchPackageNames": ["phpunit/phpunit"],
+            "allowedVersions": "<11"
+        }
+    ]
 }

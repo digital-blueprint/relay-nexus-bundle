@@ -84,7 +84,7 @@ class GenerateActivitiesCommand extends Command implements LoggerAwareInterface
 
                 // Skip duplicate activities
                 $activityName = $activity['name']['en'];
-                $duplicate = array_filter($data, function($item) use ($activityName)  {
+                $duplicate = array_filter($data, function ($item) use ($activityName) {
                     return $item['activityName'] === $activityName;
                 });
 

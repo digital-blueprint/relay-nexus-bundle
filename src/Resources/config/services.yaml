@@ -1,25 +1,25 @@
 services:
-  Dbp\Relay\NexusBundle\Rest\:
-    resource: '../../Rest'
-    autowire: true
-    autoconfigure: true
+    Dbp\Relay\NexusBundle\Rest\:
+        resource: "../../Rest"
+        autowire: true
+        autoconfigure: true
 
-  Dbp\Relay\NexusBundle\Service\:
-    resource: '../../Service'
-    autowire: true
-    autoconfigure: true
+    Dbp\Relay\NexusBundle\Service\:
+        resource: "../../Service"
+        autowire: true
+        autoconfigure: true
 
-  Dbp\Relay\NexusBundle\Command\:
-    resource: '../../Command'
-    autowire: true
-    autoconfigure: true
+    Dbp\Relay\NexusBundle\Command\:
+        resource: "../../Command"
+        autowire: true
+        autoconfigure: true
 
-  Dbp\Relay\NexusBundle\TypesenseApi\:
-    resource: '../../TypesenseApi'
-    autowire: true
-    autoconfigure: true
+    Dbp\Relay\NexusBundle\TypesenseApi\:
+        resource: "../../TypesenseApi"
+        autowire: true
+        autoconfigure: true
 
-  Dbp\Relay\NexusBundle\Authorization\:
-    resource: '../../Authorization'
-    autowire: true
-    autoconfigure: true
+    Dbp\Relay\NexusBundle\Authorization\:
+        resource: "../../Authorization"
+        autowire: true
+        autoconfigure: true

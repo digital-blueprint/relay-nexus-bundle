@@ -23,25 +23,25 @@ Add this file `dbp_relay_nexus.yaml` to your `config/packages/` directory, e.g.:
 
 ```yaml
 dbp_relay_nexus:
-  topics:
-    - 'https://server01.org/app/app.topic.metadata.json'
-    - 'https://server02.org/app/app.topic.metadata.json'
-    - 'https://server03.org/app/app.topic.metadata.json'
-  typesense:
-    host: '%env(NEXUS_TYPESENSE_HOST)%'
-    prot: '%env(NEXUS_TYPESENSE_PROT)%'
-    port: '%env(NEXUS_TYPESENSE_PORT)%'
-    api_key: '%env(NEXUS_TYPESENSE_API_KEY)%'
-  frontend:
-    alias: 'nexus--current'
-    api_key: 'nexus:search-key'
-  authorization:
-    policies:
-      ROLE_USER: 'user.get("ROLE_DEVELOPER")'
+    topics:
+        - "https://server01.org/app/app.topic.metadata.json"
+        - "https://server02.org/app/app.topic.metadata.json"
+        - "https://server03.org/app/app.topic.metadata.json"
+    typesense:
+        host: "%env(NEXUS_TYPESENSE_HOST)%"
+        prot: "%env(NEXUS_TYPESENSE_PROT)%"
+        port: "%env(NEXUS_TYPESENSE_PORT)%"
+        api_key: "%env(NEXUS_TYPESENSE_API_KEY)%"
+    frontend:
+        alias: "nexus--current"
+        api_key: "nexus:search-key"
+    authorization:
+        policies:
+            ROLE_USER: 'user.get("ROLE_DEVELOPER")'
 ```
 
 | variable     | type   | content                                                             |
-|--------------|--------|---------------------------------------------------------------------|
+| ------------ | ------ | ------------------------------------------------------------------- |
 | topics       | array  | strings are URLs to the `topic.metatdada.json` files of the apps    |
 | **typsense** |        | Settings for the internal connction to the typesense server         |
 | host         | string | name or ip of the typsense server to talk to                        |
