@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Drop support for PHP 8.1
+- Add support for api-platform 4.1+, drop support for <3.4
 
 ## v0.2.1
 

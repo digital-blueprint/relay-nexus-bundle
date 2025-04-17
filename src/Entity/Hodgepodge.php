@@ -10,6 +10,8 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\RequestBody;
 use Dbp\Relay\NexusBundle\Rest\HodgepodgeProcessor;
 use Dbp\Relay\NexusBundle\Rest\HodgepodgeProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -20,24 +22,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(
             uriTemplate: '/nexus/hodgepodges/{identifier}',
-            openapiContext: [
-                'tags' => ['Nexus'],
-            ],
+            openapi: new Operation(
+                tags: ['Nexus']
+            ),
             provider: HodgepodgeProvider::class
         ),
         new GetCollection(
             uriTemplate: '/nexus/hodgepodges',
-            openapiContext: [
-                'tags' => ['Nexus'],
-            ],
+            openapi: new Operation(
+                tags: ['Nexus']
+            ),
             provider: HodgepodgeProvider::class
         ),
         new Post(
             uriTemplate: '/nexus/hodgepodges',
-            openapiContext: [
-                'tags' => ['Nexus'],
-                'requestBody' => [
-                    'content' => [
+            openapi: new Operation(
+                tags: ['Nexus'],
+                requestBody: new RequestBody(
+                    content: new \ArrayObject([
                         'application/ld+json' => [
                             'schema' => [
                                 'type' => 'object',
@@ -50,16 +52,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
                                 'name' => 'Example Name',
                             ],
                         ],
-                    ],
-                ],
-            ],
+                    ])
+                )
+            ),
             processor: HodgepodgeProcessor::class
         ),
         new Delete(
             uriTemplate: '/nexus/hodgepodges/{identifier}',
-            openapiContext: [
-                'tags' => ['Nexus'],
-            ],
+            openapi: new Operation(
+                tags: ['Nexus']
+            ),
             provider: HodgepodgeProvider::class,
             processor: HodgepodgeProcessor::class
         ),
