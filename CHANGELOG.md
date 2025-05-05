@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## v0.2.2
+
 - Drop support for PHP 8.1
 - Add support for api-platform 4.1+, drop support for <3.4
+- Various improvements and fixes
 
 ## v0.2.1
 
