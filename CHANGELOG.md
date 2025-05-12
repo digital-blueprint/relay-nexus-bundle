@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v0.2.3
+
+- config: drop alias config
+- sync: only keep around one collection
+
 ## v0.2.2
 
 - Drop support for PHP 8.1
