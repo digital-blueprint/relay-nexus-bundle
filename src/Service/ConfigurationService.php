@@ -39,6 +39,6 @@ class ConfigurationService
 
     public function getAliasName(): string
     {
-        return $this->config['frontend']['alias'] ?? '';
+        return 'nexus--current';
     }
 }

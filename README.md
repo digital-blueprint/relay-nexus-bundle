@@ -28,29 +28,19 @@ dbp_relay_nexus:
         - "https://server02.org/app/app.topic.metadata.json"
         - "https://server03.org/app/app.topic.metadata.json"
     typesense:
-        host: "%env(NEXUS_TYPESENSE_HOST)%"
-        prot: "%env(NEXUS_TYPESENSE_PROT)%"
-        port: "%env(NEXUS_TYPESENSE_PORT)%"
+        api_url: "%env(NEXUS_TYPESENSE_API_URL)%"
         api_key: "%env(NEXUS_TYPESENSE_API_KEY)%"
-    frontend:
-        alias: "nexus--current"
-        api_key: "nexus:search-key"
     authorization:
-        policies:
+        roles:
             ROLE_USER: 'user.get("ROLE_DEVELOPER")'
 ```
 
 | variable     | type   | content                                                             |
-| ------------ | ------ | ------------------------------------------------------------------- |
+|--------------|--------|---------------------------------------------------------------------|
 | topics       | array  | strings are URLs to the `topic.metatdada.json` files of the apps    |
 | **typsense** |        | Settings for the internal connction to the typesense server         |
-| host         | string | name or ip of the typsense server to talk to                        |
-| prot         | string | protocol to talk to the typesense server either 'http' or 'https'   |
-| port         | int    | port of the typesense server to talk to                             |
+| api_url      | string | Typesense API URL of the internal typesense server                  |
 | api_key      | string | typesense API key to create, query and delete typesense collections |
-| **frontend** |        | Settings for the front end app                                      |
-| alias        | string | name of the current collection to query via the typesense proxy     |
-| api_key      | string | API key to query the current collection via the typesense proxy     |
 
 ## Automatic import into new collection
 
