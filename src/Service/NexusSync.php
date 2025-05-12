@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dbp\Relay\NexusBundle\Service;
 
 use Dbp\Relay\NexusBundle\Typesense\Connection;
-use Http\Client\Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -14,7 +13,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Typesense\Client;
-use Typesense\Exceptions\TypesenseClientError;
 
 class NexusSync implements LoggerAwareInterface
 {
@@ -121,11 +119,7 @@ class NexusSync implements LoggerAwareInterface
                     $output->writeln('<info>Aliases written</info>');
                     $output->writeln("alias {$this->aliasName} for $collectionName");
                 }
-                $removed = $this->removeOldCollections();
-                if ($verbose) {
-                    $output->writeln('<info>Remove old collections</info>');
-                    $output->writeln("{$removed} old collections removed");
-                }
+                $this->removeOldCollections();
             } else {
                 $output->writeln('<error>Upsert documents failed.</error>');
 
@@ -141,38 +135,32 @@ class NexusSync implements LoggerAwareInterface
     }
 
     /**
-     * Remove collections, which names start with self::collectionPrefix(), but keep at least some.
-     *
-     * @param int $keep number of collections to keep
-     *
-     * @return int number of collections deleted
-     *
-     * @throws Exception
-     * @throws TypesenseClientError
+     * Remove old collections, which names start with self::collectionPrefix().
      */
-    private function removeOldCollections(int $keep = 3): int
+    public function removeOldCollections(): void
     {
-        $removed = 0;
-        $nexusCollectionNames = [];
-        $collections = $this->client->collections->retrieve();
+        $client = $this->client;
+        $collectionNameSkipList = [];
+
+        // Don't delete the currently linked collection in all cases
+        $alias = $client->aliases[$this->config->getAliasName()]->retrieve();
+        $collectionNameSkipList[] = $alias['collection_name'];
+
+        // Collect all collections with the given prefix that are not in the skip list
+        $collections = $client->collections->retrieve();
+        $collectionNameList = [];
         foreach ($collections as $collection) {
-            $name = $collection['name'];
-            echo "name: $name\n";
-            if (str_starts_with($name, self::collectionPrefix())) {
-                $nexusCollectionNames[] = $name;
-            }
-        }
-        if (count($nexusCollectionNames) > 0) {
-            rsort($nexusCollectionNames);
-            foreach ($nexusCollectionNames as $index => $name) {
-                if ($index >= $keep) {
-                    $this->client->collections[$name]->delete();
-                    ++$removed;
-                }
+            if (str_starts_with($collection['name'], $this->collectionPrefix())
+                && !in_array($collection['name'], $collectionNameSkipList, true)) {
+                $collectionNameList[] = $collection['name'];
             }
         }
 
-        return $removed;
+        // Delete the remaining collections
+        foreach ($collectionNameList as $collectionName) {
+            $this->logger->info("Deleting old collection '$collectionName'");
+            $client->collections[$collectionName]->delete();
+        }
     }
 
     /**
