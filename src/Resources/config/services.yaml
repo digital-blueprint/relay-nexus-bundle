@@ -9,8 +9,8 @@ services:
         autowire: true
         autoconfigure: true
 
-    Dbp\Relay\NexusBundle\TypesenseApi\:
-        resource: "../../TypesenseApi"
+    Dbp\Relay\NexusBundle\TypesenseProxy\:
+        resource: "../../TypesenseProxy"
         autowire: true
         autoconfigure: true
 

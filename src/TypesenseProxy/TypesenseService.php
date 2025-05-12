@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dbp\Relay\NexusBundle\TypesenseApi;
+namespace Dbp\Relay\NexusBundle\TypesenseProxy;
 
 use Dbp\Relay\CoreBundle\Exception\ApiError;
 use Dbp\Relay\NexusBundle\Authorization\AuthorizationService;
