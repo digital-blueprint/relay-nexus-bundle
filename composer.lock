@@ -7836,16 +7836,16 @@
         },
         {
             "name": "typesense/typesense-php",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/typesense/typesense-php.git",
-                "reference": "0e8dee542c05b201becf4734319075e6c4d540b3"
+                "reference": "1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/typesense/typesense-php/zipball/0e8dee542c05b201becf4734319075e6c4d540b3",
-                "reference": "0e8dee542c05b201becf4734319075e6c4d540b3",
+                "url": "https://api.github.com/repos/typesense/typesense-php/zipball/1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7",
+                "reference": "1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7",
                 "shasum": ""
             },
             "require": {
@@ -7903,7 +7903,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-05T17:35:26+00:00"
+            "time": "2025-08-15T15:21:26+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -11448,5 +11448,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
