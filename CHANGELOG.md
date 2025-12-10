@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v0.2.4
+
+- Add support for Symfony 7.4
+
 ## v0.2.3
 
 - config: drop alias config
