@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v0.2.5
+
+- Symfony 7 fixes
+
 ## v0.2.4
 
 - Add support for Symfony 7.4
