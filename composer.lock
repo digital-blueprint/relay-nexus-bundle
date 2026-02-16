@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29bb67c1e857716c4df79aa059c46000",
+    "content-hash": "099c3b2763868ae66467c8be9b39780c",
     "packages": [
         {
             "name": "api-platform/documentation",
@@ -8745,16 +8745,16 @@
         },
         {
             "name": "typesense/typesense-php",
-            "version": "v5.2.0",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/typesense/typesense-php.git",
-                "reference": "1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7"
+                "reference": "e113f90449e159316a433a5509205939f271c5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/typesense/typesense-php/zipball/1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7",
-                "reference": "1fbf79e1c10a8fd4cc3df9c3cddbe158e93542f7",
+                "url": "https://api.github.com/repos/typesense/typesense-php/zipball/e113f90449e159316a433a5509205939f271c5e2",
+                "reference": "e113f90449e159316a433a5509205939f271c5e2",
                 "shasum": ""
             },
             "require": {
@@ -8812,7 +8812,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-15T15:21:26+00:00"
+            "time": "2025-12-22T20:51:44+00:00"
         },
         {
             "name": "willdurand/negotiation",
