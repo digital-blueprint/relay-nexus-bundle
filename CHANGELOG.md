@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v0.2.6
+
+- Add support for typesense/typesense-php 6.0
+
 ## v0.2.5
 
 - Symfony 7 fixes
