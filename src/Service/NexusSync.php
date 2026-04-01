@@ -210,10 +210,9 @@ class NexusSync implements LoggerAwareInterface
                     $this->logger->info('Found existing matching key '.$key['id']);
                     $foundId = $key['id'];
                     break;
-                } else {
-                    $this->logger->info('Deleting outdated key '.$key['id']);
-                    $client->keys[$key['id']]->delete();
                 }
+                $this->logger->info('Deleting outdated key '.$key['id']);
+                $client->keys[$key['id']]->delete();
             }
         }
 
